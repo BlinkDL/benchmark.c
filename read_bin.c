@@ -4,9 +4,7 @@ gcc -O3 -mavx2 -pthread read_bin.c -o read_bin
 
 ./read_bin
 
-Currently very buggy (as expected from LLM lol) and only 27.6 GB/s (4 x PCIE5.0x4 NVMEs)
-
-Huge room for improvements
+Currently only 29.4 GB/s (4 x PCIE5.0x4 NVMEs), huge room for improvements
 
 =============================================================================*/
 
@@ -16,6 +14,7 @@ Huge room for improvements
 #include <fcntl.h>
 #include <unistd.h>
 #include <time.h>
+#include <assert.h>
 #include <stdint.h>
 #include <immintrin.h>
 #include <pthread.h>
@@ -82,7 +81,7 @@ void *read_file(void *arg) {
 
         uint8_t *p = (uint8_t *)buf;
         size_t vec_size = nread / 32; // Process 32 bytes at a time
-        size_t remainder = nread % 32;
+        assert(nread % 32 == 0);
 
         // Initialize accumulator vectors
         __m256i sum_vec1 = _mm256_setzero_si256();
@@ -107,12 +106,7 @@ void *read_file(void *arg) {
         // Combine the two accumulator vectors
         __m256i sum_vec = _mm256_add_epi32(sum_vec1, sum_vec2);
         uint32_t vector_sum = sum_avx2(sum_vec);
-        
-        // Process remaining bytes
-        for (size_t i = nread - remainder; i < nread; i++) {
-            vector_sum += p[i];
-        }
-        
+
         local_sum += vector_sum;
         total += nread;
     }
@@ -169,13 +163,12 @@ int main(int argc, char *argv[]) {
         grand_total_bytes += thread_data[i].total_bytes;
     }
 
-    double elapsed = (end.tv_sec - start.tv_sec) + 
-                     (end.tv_nsec - start.tv_nsec) / 1e9;
-    double speed = (grand_total_bytes / (1024.0 * 1024.0 * 1024.0)) / elapsed;
+    double elapsed_ns = (end.tv_sec - start.tv_sec) * 1e9 + (end.tv_nsec - start.tv_nsec);
+    double speed = grand_total_bytes / elapsed_ns; // here we use 1GB/s = 1e9 bytes/s
 
     printf("Overall Checksum: %lu\n", total_sum);
     printf("Total bytes read: %zu\n", grand_total_bytes);
-    printf("Elapsed time: %.2f seconds\n", elapsed);
+    printf("Elapsed time: %.2f seconds\n", elapsed_ns / 1e9);
     printf("Processing speed: %.2f GB/s\n", speed);
 
     return 0;

@@ -13,4 +13,4 @@ Current result:
 
 DRAM processing = 60.8 GB/s
 
-SSD processing = 27.6 GB/s (buggy code from LLM, huge room for improvements)
+SSD processing = 29.4 GB/s (huge room for improvements)
