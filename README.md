@@ -1,5 +1,5 @@
 # fast.c
-Benchmark CPU, DRAM, SSD, iGPU, GPU, ... with efficient code.
+Prepare for DeekSeek R1 inference: Benchmark CPU, DRAM, SSD, iGPU, GPU, ... with efficient code.
 
 Current optimization target:
 
