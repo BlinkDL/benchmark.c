@@ -4,7 +4,7 @@ gcc -O3 -mavx2 -pthread read_bin.c -o read_bin
 
 ./read_bin
 
-Currently very buggy (as expected from LLM lol) and only 24 GB/s (4 x PCIE5.0x4 NVMEs)
+Currently very buggy (as expected from LLM lol) and only 27.6 GB/s (4 x PCIE5.0x4 NVMEs)
 
 Huge room for improvements
 
@@ -128,7 +128,7 @@ void *read_file(void *arg) {
 int main(int argc, char *argv[]) {
     // Hard-code the four file paths.
     const char *files[4] = {
-        "/mnt/nvme1/10GB.bin",
+        "/mnt/nvme0/10GB.bin",
         "/mnt/nvme1/10GB.bin",
         "/mnt/nvme2/10GB.bin",
         "/mnt/nvme3/10GB.bin"
