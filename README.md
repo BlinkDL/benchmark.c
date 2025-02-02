@@ -15,4 +15,4 @@ NVME raw speed = 53+ GB/s
 
 DRAM processing = 60.8 GB/s
 
-SSD processing = 29.4 GB/s (huge room for improvements)
+SSD processing = 29.4 GB/s (huge room for improvements, such as ovelapping io & compute, raw fs)

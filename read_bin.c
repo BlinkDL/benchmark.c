@@ -4,7 +4,7 @@ gcc -O3 -mavx2 -pthread read_bin.c -o read_bin
 
 ./read_bin
 
-Currently only 29.4 GB/s (4 x PCIE5.0x4 NVMEs), huge room for improvements
+Currently only 29.6 GB/s (4 x PCIE5.0x4 NVMEs), huge room for improvements, such as ovelapping io & compute, raw fs
 
 =============================================================================*/
 
