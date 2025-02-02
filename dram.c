@@ -2,6 +2,8 @@
 
 gcc-14 -O3 -march=native -mavx512f -o dram dram.c -lnuma && sudo ./dram
 
+this will compute a "checksum" by summing all uint8_t elements of array
+
 60.8 GB/s for DDR5-6000 dual channel & AMD Zen4 CPU
 
 =============================================================================*/
